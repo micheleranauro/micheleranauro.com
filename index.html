@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>Michele Ranauro | The Cardiophone Architect</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root{ --bg:#000000; --text:#E0E0E0; --gold:#C5B358; }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{ font-family:'Montserrat',sans-serif; background:var(--bg); color:var(--text); overflow-x:hidden; min-height:100vh; }
+    h1,h2,h3{ font-family:'Cinzel',serif; }
+    .accent-gold{ color:var(--gold); }
+    
+    .hero-video{ position:fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:-2; }
+    .hero-overlay{ position:fixed; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.9) 100%); z-index:-1; pointer-events:none; }
+
+    section{ position:relative; padding:6rem 1.5rem; min-height:100vh; display:flex; flex-direction:column; justify-content:center; }
+    .container-max{ max-width:72rem; margin:0 auto; }
+    .section-title{ font-family:'Cinzel',serif; font-size:clamp(2rem, 4vw, 3rem); text-align:center; color:var(--gold); margin-bottom:2.5rem; text-transform:uppercase; letter-spacing:0.1em; }
+
+    .card{ background:rgba(0,0,0,0.85); border:1px solid rgba(197,179,88,0.3); padding:2rem; transition:transform 0.3s ease, border-color 0.3s ease; display:flex; flex-direction:column; justify-content:space-between; }
+    .card:hover{ transform:translateY(-5px); border-color:var(--gold); box-shadow:0 0 25px rgba(197,179,88,0.2); }
+
+    .btn-primary{ display:inline-flex; align-items:center; justify-content:center; padding:1rem 2rem; border:1px solid var(--gold); color:var(--gold); background:transparent; text-transform:uppercase; letter-spacing:0.1em; font-weight:600; transition:all 0.3s ease; cursor:pointer; text-decoration:none; width:100%; text-align:center; }
+    .btn-primary:hover{ background:rgba(197,179,88,0.15); box-shadow:0 0 15px rgba(197,179,88,0.25); }
+    .btn-whatsapp{ border-color:#25D366; background:#25D366; color:#000; }
+    .btn-whatsapp:hover{ background:#20BA5A; }
+
+    /* SPLASH SCREEN & LANGUAGES - OPTIMIZED FOR MOBILE */
+    #splash{ position:fixed; inset:0; background:#000; z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; transition:opacity 1s ease, visibility 1s ease; padding: 20px; }
+    #splash.hidden{ opacity:0; visibility:hidden; pointer-events:none; }
+    .splash-title{ font-family:'Cinzel',serif; color:var(--gold); font-size:clamp(2.5rem, 6vw, 4.5rem); margin-bottom:3rem; letter-spacing:0.15em; text-align:center; }
+    
+    .splash-lang-bar{ display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:0.5rem; max-width:1000px; }
+    .splash-lang-btn{ font-family:'Cinzel',serif; color:var(--gold); background:none; border:1px solid transparent; cursor:pointer; transition:all 0.3s ease; opacity:0.7; letter-spacing: 1px;}
+    .splash-lang-sep{ color:var(--gold); opacity:0.3; user-select:none; font-size: 1.2rem; }
+
+    /* Desktop Styles for Lang */
+    @media (min-width: 769px) {
+      .splash-lang-btn { font-size: 1.1rem; padding: 0.5rem 0.8rem; }
+      .splash-lang-btn:hover { opacity:1; text-shadow:0 0 15px var(--gold); transform: scale(1.1); }
+    }
+
+    /* Mobile Styles for Lang - BIGGER, GRID, NO DOTS */
+    @media (max-width: 768px) {
+      .splash-lang-bar { gap: 12px; display: flex; justify-content: center; }
+      .splash-lang-sep { display: none; }
+      .splash-lang-btn {
+        font-size: 1rem; padding: 12px 18px; border: 1px solid rgba(197,179,88,0.2);
+        border-radius: 4px; background: rgba(0,0,0,0.4); width: auto; min-width: 90px;
+        text-align: center; flex-grow: 1; max-width: 45%;
+      }
+      .splash-lang-btn:active { background: rgba(197,179,88,0.2); border-color: var(--gold); opacity: 1; }
+    }
+
+    #modal{ position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:10000; display:none; align-items:center; justify-content:center; padding:1rem; }
+    #modal.open{ display:flex; }
+    .modal-content{ width:100%; max-width:1000px; position:relative; aspect-ratio:16/9; background:#000; border:1px solid var(--gold); }
+    .modal-close{ position:absolute; top:-40px; right:0; color:var(--gold); font-size:2rem; background:none; border:none; cursor:pointer; }
+    iframe{ width:100%; height:100%; border:none; }
+
+    .audio-ctrl{ position:fixed; bottom:20px; right:20px; z-index:9990; display:none; align-items:center; gap:10px; background:rgba(0,0,0,0.7); padding:10px; border:1px solid var(--gold); border-radius:50px; backdrop-filter: blur(5px);}
+    .audio-btn{ background:none; border:none; color:var(--gold); font-size:1.5rem; cursor:pointer; }
+    .audio-text a{ color:var(--gold); text-decoration:none; font-size:0.8rem; border-bottom:1px solid var(--gold); text-transform:uppercase; letter-spacing:1px;}
+
+    #scrollIndicator { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 500; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; background: rgba(0, 0, 0, 0.75); border: 2px solid var(--gold); border-radius: 60px; padding: 16px 32px 20px 32px; backdrop-filter: blur(8px); transition: opacity 0.5s ease, transform 0.3s ease; }
+    #scrollIndicator.fade-out { opacity: 0; pointer-events: none; }
+    #scrollIndicator .scroll-label { font-family: 'Cinzel', serif; font-size: 0.9rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.4em; }
+    .arrow-down span { display: block; width: 20px; height: 20px; border-right: 3px solid var(--gold); border-bottom: 3px solid var(--gold); transform: rotate(45deg); }
+  </style>
+</head>
+<body>
+
+  <video id="bg-video" class="hero-video" autoplay muted loop playsinline>
+    <source src="hero_bg.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+
+  <div id="splash">
+    <div class="splash-title">MICHELE RANAURO</div>
+    <div class="splash-lang-bar">
+      <button class="splash-lang-btn" data-lang="en">English</button>
+      <span class="splash-lang-sep">&middot;</span>
+      <button class="splash-lang-btn" data-lang="it">Italiano</button>
+      <span class="splash-lang-sep">&middot;</span>
+      <button class="splash-lang-btn" data-lang="es">Español</button>
+      <span class="splash-lang-sep">&middot;</span>
+      <button class="splash-lang-btn" data-lang="zh">中文</button>
+      <span class="splash-lang-sep">&middot;</span>
+      <button class="splash-lang-btn" data-lang="ar">العربية</button>
+      <span class="splash-lang-sep">&middot;</span>
+      <button class="splash-lang-btn" data-lang="fr">Français</button>
+      <span class="splash-lang-sep">&middot;</span>
+      <button class="splash-lang-btn" data-lang="ja">日本語</button>
+      <span class="splash-lang-sep">&middot;</span>
+      <button class="splash-lang-btn" data-lang="de">Deutsch</button>
+      <span class="splash-lang-sep">&middot;</span>
+      <button class="splash-lang-btn" data-lang="ko">한국어</button>
+    </div>
+  </div>
+
+  <audio id="bg-audio" loop>
+    <source src="velvet_embargo.mp3" type="audio/mpeg">
+  </audio>
+
+  <div id="audioUI" class="audio-ctrl">
+    <button id="audioToggle" class="audio-btn">⏸</button>
+    <div class="audio-text">
+      <a data-i18n="audio_link" href="https://micheleranauro.disco.ac/share-new/551226553?signature=BcsLC4GFlMlW7ziBO3iVIJ3y-sQ%3Akh71OfGS#/f/36207970/p/27467059" target="_blank">Listen Full Version</a>
+    </div>
+  </div>
+
+  <div id="modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">&#10005;</button>
+      <iframe id="modalFrame" src="" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div id="scrollIndicator" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+    <span data-i18n="scroll_text" class="scroll-label">Scroll</span>
+    <div class="arrow-down"><span></span></div>
+  </div>
+
+  <main>
+    <section id="hero-section">
+      <div class="container-max text-center">
+        <h1 class="accent-gold font-bold" style="font-size:clamp(3rem,8vw,6rem); letter-spacing:0.1em;">MICHELE RANAURO</h1>
+        <p data-i18n="hero_subtitle" class="text-xl md:text-2xl mt-4 text-gray-300 uppercase tracking-widest">Pianist | Composer | Multimedia Producer</p>
+        <p data-i18n="hero_quote" class="mt-8 text-lg md:text-xl italic opacity-90 max-w-3xl mx-auto leading-relaxed">
+          "I don't play the piano – I play the Cardiophone. Music that starts in the heart and reaches the mind."
+        </p>
+        <p class="mt-8">
+            <a data-i18n="hero_link" href="https://micheleranauro.disco.ac/share-new/551226553?signature=BcsLC4GFlMlW7ziBO3iVIJ3y-sQ%3Akh71OfGS#/f/36207970/p/27467059" target="_blank" class="accent-gold border-b border-[#C5B358] text-sm md:text-base font-bold tracking-[0.2em] hover:text-white transition-colors">TO LISTEN TO VELVET EMBARGO FULL VERSION, CLICK HERE</a>
+        </p>
+      </div>
+    </section>
+
+    <section id="about">
+        <div class="container-max">
+          <h2 data-i18n="about_title" class="section-title">Creative Profile</h2>
+          <div class="card max-w-4xl mx-auto space-y-6">
+            <p data-i18n="about_p1" class="text-base md:text-lg leading-relaxed">Pianist, Composer, and Producer celebrated for a trailblazing six-finger technique developed after a career-threatening injury. His 30-year journey spans jazz, contemporary classical, and high-end electronic production.</p>
+            <p data-i18n="about_p2" class="text-base md:text-lg leading-relaxed">He creates immersive soundscapes and high-impact scores for global luxury brands including Armani, Prada, Moschino, and Audi. His live experiences merge music with visual art and new technologies.</p>
+            <p data-i18n="about_p3" class="text-base md:text-lg leading-relaxed">As a founding partner of WICK Productions (Milano/New York), he integrates multimedia storytelling for Hollywood clients. He was awarded 'Best AI Short Film' at the 2025 AI Film Awards in Paris.</p>
+            <p data-i18n="about_p4" class="text-base md:text-lg leading-relaxed accent-gold font-medium">Notable validations include playing alongside Miles Davis and in concert with Dizzy Gillespie. He has also collaborated with contemporary icons like Skrillex, Wiwek, and Davide Rossi.</p>
+          </div>
+        </div>
+    </section>
+
+    <section>
+      <div class="container-max">
+        <h2 data-i18n="media_title" class="section-title">Media Selection</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="card relative overflow-hidden border-gold">
+            <div class="absolute top-0 right-0 bg-[#C5B358] text-black text-[10px] font-bold px-3 py-1 rounded-bl uppercase tracking-widest z-10">100% One-Stop</div>
+            <h3 data-i18n="card_music_title" class="text-xl font-bold accent-gold mb-2 mt-4">Music Portfolio</h3>
+            <p data-i18n="card_music_desc" class="text-sm opacity-80 mb-4 leading-relaxed">100% One-Stop (Master & Publishing). Discover the full discography on Disco.ac.</p>
+            <a data-i18n="btn_disco" href="https://micheleranauro.disco.ac/share-new/551226553?signature=BcsLC4GFlMlW7ziBO3iVIJ3y-sQ%3Akh71OfGS#/" target="_blank" class="btn-primary mt-auto">Visit Disco.ac</a>
+          </div>
+          <div class="card">
+            <h3 data-i18n="card_ai_title" class="text-xl font-bold accent-gold mb-2">AI Works Reel</h3>
+            <p data-i18n="card_ai_desc" class="text-sm opacity-80 mb-4">Watch the award-winning immersive reel.</p>
+            <button data-i18n="btn_video" class="btn-primary mt-auto" onclick="openVideo('iuFmRj5vI14')">Open Video</button>
+          </div>
+          <div class="card">
+            <h3 class="text-xl font-bold accent-gold mb-2">Johann Bristol</h3>
+            <p data-i18n="card_bach_desc" class="text-sm opacity-80 mb-4">When Bach meets Massive Attack.</p>
+            <a data-i18n="btn_insta" href="https://www.instagram.com/reel/DPBueyogThg/" target="_blank" class="btn-primary mt-auto">Watch on Instagram</a>
+          </div>
+          <div class="card">
+            <h3 class="text-xl font-bold accent-gold mb-2">Vodafone / Live at Teatro Vetra</h3>
+            <p data-i18n="card_vodafone_desc" class="text-sm opacity-80 mb-4">Live performance at Teatro Vetra, Milan.</p>
+            <button data-i18n="btn_vodafone" class="btn-primary mt-auto" onclick="openVideo('E7S7GCMTNMg')">Watch on YouTube</button>
+          </div>
+          <div class="card">
+            <h3 class="text-xl font-bold accent-gold mb-2">Goldberg 5 Variation Live</h3>
+            <p data-i18n="card_goldberg_desc" class="text-sm opacity-80 mb-4">Goldberg Variations performed live in Milan.</p>
+            <a data-i18n="btn_goldberg" href="https://www.instagram.com/reel/DKlwkzLBTyI/?igsh=MThyaW5kaXY5ejN5bg==" target="_blank" class="btn-primary mt-auto">Watch on Instagram</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container-max text-center">
+        <h2 data-i18n="contact_title" class="section-title">Contact</h2>
+        <div class="card max-w-2xl mx-auto items-center">
+          <p class="mb-8"><a href="mailto:michele@micheleranauro.com" class="text-xl md:text-2xl border-b border-[#C5B358] text-[#C5B358] tracking-widest">michele@micheleranauro.com</a></p>
+          <a data-i18n="btn_whatsapp" href="https://wa.me/393245903787" target="_blank" class="btn-primary btn-whatsapp max-w-xs">Chat on WhatsApp</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const translations = {
+      en: {
+        hero_subtitle: "Pianist | Composer | Multimedia Producer",
+        hero_quote: "\"I don't play the piano – I play the Cardiophone. Music that starts in the heart and reaches the mind.\" The Anomaly. Virtuoso.",
+        hero_link: "TO LISTEN TO VELVET EMBARGO FULL VERSION, CLICK HERE",
+        about_title: "Creative Profile",
+        about_p1: "Pianist, Composer, and Producer celebrated for a trailblazing six-finger technique developed after a career-threatening injury. His 30-year journey spans jazz, contemporary classical, and high-end electronic production.",
+        about_p2: "He creates immersive soundscapes and high-impact scores for global luxury brands including Armani, Prada, Moschino, and Audi. His live experiences merge music with visual art and new technologies.",
+        about_p3: "As a founding partner of WICK Productions (Milano/New York), he integrates multimedia storytelling for Hollywood clients. He was awarded 'Best AI Short Film' at the 2025 AI Film Awards in Paris.",
+        about_p4: "Notable historical validations include playing alongside Miles Davis and in concert with Dizzy Gillespie. He has also collaborated with contemporary icons like Skrillex, Wiwek, and Davide Rossi.",
+        media_title: "Media Selection",
+        card_music_title: "Music Portfolio",
+        card_music_desc: "100% One-Stop (Master & Publishing). Discover the full discography on Disco.ac.",
+        btn_disco: "Visit Disco.ac",
+        card_ai_title: "AI Works Reel",
+        card_ai_desc: "Watch the award-winning immersive reel.",
+        btn_video: "Open Video",
+        card_bach_desc: "When Bach meets Massive Attack.",
+        btn_insta: "Watch on Instagram",
+        card_vodafone_desc: "Live performance at Teatro Vetra, Milan.",
+        btn_vodafone: "Watch on YouTube",
+        card_goldberg_desc: "Goldberg Variations performed live in Milan.",
+        btn_goldberg: "Watch on Instagram",
+        contact_title: "Contact",
+        btn_whatsapp: "Chat on WhatsApp",
+        audio_link: "Listen Full Version",
+        scroll_text: "SCROLL"
+      },
+      it: {
+        hero_subtitle: "Pianista | Compositore | Produttore Multimediale",
+        hero_quote: "\"Non suono il pianoforte, suono il Cardiophone. Musica che nasce nel cuore e raggiunge la mente.\" L'Anomalia. Il Virtuoso.",
+        hero_link: "PER ASCOLTARE LA VERSIONE INTEGRALE DI VELVET EMBARGO, CLICCA QUI",
+        about_title: "Profilo Creativo",
+        about_p1: "Pianista, Compositore e Produttore, celebre per la tecnica pionieristica a sei dita sviluppata dopo un grave infortunio. Il suo percorso trentennale spazia tra jazz, classica contemporanea ed elettronica di alto livello.",
+        about_p2: "Crea paesaggi sonori immersivi e colonne sonore per marchi globali come Armani, Prada, Moschino e Audi. Le sue performance dal vivo fondono musica, arte visiva e nuove tecnologie.",
+        about_p3: "Come socio fondatore di WICK Productions (Milano/New York), integra lo storytelling multimediale per clienti di Hollywood. Ha vinto il premio 'Best AI Short Film' ai 2025 AI Film Awards di Parigi.",
+        about_p4: "Validazioni storiche d'élite includono l'aver suonato accanto a Miles Davis e in concerto con Dizzy Gillespie. Ha inoltre collaborato con icone contemporanee come Skrillex, Wiwek e Davide Rossi.",
+        media_title: "Selezione Media",
+        card_music_title: "Portfolio Musicale",
+        card_music_desc: "100% One-Stop (Master & Publishing). Scopri la discografia completa su Disco.ac.",
+        btn_disco: "Visita Disco.ac",
+        card_ai_title: "Reel Opere AI",
+        card_ai_desc: "Guarda il reel immersivo pluripremiato.",
+        btn_video: "Apri Video",
+        card_bach_desc: "Quando Bach incontra i Massive Attack.",
+        btn_insta: "Guarda su Instagram",
+        card_vodafone_desc: "Esibizione dal vivo al Teatro Vetra, Milano.",
+        btn_vodafone: "Guarda su YouTube",
+        card_goldberg_desc: "Variazioni Goldberg eseguite dal vivo a Milano.",
+        btn_goldberg: "Guarda su Instagram",
+        contact_title: "Contatti",
+        btn_whatsapp: "Scrivimi su WhatsApp",
+        audio_link: "Versione Integrale",
+        scroll_text: "SCORRI"
+      },
+      es: {
+        hero_subtitle: "Pianista | Compositor | Productor Multimedia",
+        hero_quote: "\"No toco el piano, toco el Cardiophone. Música que nace en el corazón y llega a la mente.\" La Anomalía. El Virtuoso.",
+        hero_link: "PARA ESCUCHAR LA VERSIÓN COMPLETA DE VELVET EMBARGO, HAZ CLIC AQUÍ",
+        about_title: "Perfil Creativo",
+        about_p1: "Pianista, Compositor y Productor, célebre por su técnica pionera de seis dedos desarrollada tras una lesión que amenazó su carrera. 30 años de trayectoria entre jazz, clásica y electrónica.",
+        about_p2: "Crea paisajes sonoros inmersivos para marcas de lujo como Armani, Prada y Audi, uniendo música y arte visual.",
+        about_p3: "Socio fundador de WICK Productions (Milán/NY), integra narrativas multimedia para Hollywood. Premiado 'Mejor Corto AI' en París 2025.",
+        about_p4: "Sus validaciones históricas incluyen tocar junto a Miles Davis y en concierto con Dizzy Gillespie. También ha colaborado con íconos actuales como Skrillex y Davide Rossi.",
+        media_title: "Selección de Medios",
+        card_music_title: "Portafolio Musical",
+        card_music_desc: "100% One-Stop (Master & Publishing). Descubre la discografía en Disco.ac.",
+        btn_disco: "Visitar Disco.ac",
+        card_ai_title: "Obras de IA",
+        card_ai_desc: "Mira el reel inmersivo premiado.",
+        btn_video: "Abrir Video",
+        card_bach_desc: "Cuando Bach se encuentra con Massive Attack.",
+        btn_insta: "Ver en Instagram",
+        card_vodafone_desc: "Actuación en vivo en el Teatro Vetra, Milán.",
+        btn_vodafone: "Ver en YouTube",
+        card_goldberg_desc: "Variaciones Goldberg en vivo en Milán.",
+        btn_goldberg: "Ver en Instagram",
+        contact_title: "Contacto",
+        btn_whatsapp: "Chat en WhatsApp",
+        audio_link: "Versión Completa",
+        scroll_text: "DESPLAZAR"
+      },
+      zh: {
+        hero_subtitle: "钢琴家 | 作曲家 | 多媒体制作人",
+        hero_quote: "“我弹奏的不是钢琴，而是‘心音琴’（Cardiophone）。音乐源于心，达于智。” 非凡。巨匠。",
+        hero_link: "点击此处收听 VELVET EMBARGO 完整版",
+        about_title: "艺术档案",
+        about_p1: "钢琴家、作曲家与制作人，以伤后独创的“六指技法”闻名。拥有30年跨越爵士、古典与高端电子乐的创作经验。",
+        about_p2: "为 Armani、Prada 和 Audi 等全球奢侈品牌打造沉浸式声景，将音乐与视觉科技完美融合。",
+        about_p3: "WICK Productions（米兰/纽约）创始人，为好莱坞客户提供多媒体叙事。2025年于巴黎获“最佳AI短片奖”。",
+        about_p4: "历史性成就包括与 Miles Davis 同台，以及与 Dizzy Gillespie 的音乐会。他也曾与 Skrillex、Wiwek 等当代偶像合作。",
+        media_title: "媒体精选",
+        card_music_title: "音乐作品",
+        card_music_desc: "100% One-Stop (录音与词曲全版权)。在 Disco.ac 上探索完整唱片。",
+        btn_disco: "访问 Disco.ac",
+        card_ai_title: "AI 视觉作品",
+        card_ai_desc: "观看屡获殊荣的沉浸式短片。",
+        btn_video: "打开视频",
+        card_bach_desc: "当巴赫遇上 Massive Attack。",
+        btn_insta: "在 Instagram 上观看",
+        card_vodafone_desc: "米兰 Teatro Vetra 现场演出。",
+        btn_vodafone: "在 YouTube 上观看",
+        card_goldberg_desc: "米兰现场演奏哥德堡变奏曲。",
+        btn_goldberg: "在 Instagram 上观看",
+        contact_title: "联系方式",
+        btn_whatsapp: "WhatsApp 聊天",
+        audio_link: "完整版本",
+        scroll_text: "向下滚动"
+      },
+      ar: {
+        hero_subtitle: "عازف بيانو | ملحن | منتج وسائط متعددة",
+        hero_quote: "\"أنا لا أعزف على البيانو، أنا أعزف على الكارديوفون. موسيقى تبدأ في القلب وتصل إلى العقل.\" الاستثناء. العبقري.",
+        hero_link: "اضغط هنا للاستماع إلى النسخة الكاملة من VELVET EMBARGO",
+        about_title: "الملف الإبداعي",
+        about_p1: "عازف بيانو وملحن ومنتج، مشهور بتقنية الأصابع الستة الرائدة التي طورها بعد إصابة هددت مسيرته. 30 عاماً من الخبرة في دمج الجاز بالموسيقى الإلكترونية الراقية.",
+        about_p2: "يصمم مناظر صوتية لعلامات تجارية كبرى مثل Armani و Audi، مدمجاً الموسيقى بالفن البصري.",
+        about_p3: "شريك مؤسس لـ WICK Productions (ميلانو/نيويورك). حائز على جائزة أفضل فيلم AI قصير في باريس 2025.",
+        about_p4: "تشمل إنجازاته التاريخية العزف إلى جانب أسطورة الجاز Miles Davis وفي حفلات مع Dizzy Gillespie. كما تعاون مع أيقونات معاصرة مثل Skrillex.",
+        media_title: "الوسائط",
+        card_music_title: "المحفظة الموسيقية",
+        card_music_desc: "100% One-Stop (حقوق الماستر والنشر). اكتشف الألبومات الكاملة على Disco.ac.",
+        btn_disco: "زيارة Disco.ac",
+        card_ai_title: "أعمال الذكاء الاصطناعي",
+        card_ai_desc: "شاهد العرض الغامر الحائز على جوائز.",
+        btn_video: "افتح الفيديو",
+        card_bach_desc: "عندما يلتقي باخ مع Massive Attack.",
+        btn_insta: "شاهد على إنستغرام",
+        card_vodafone_desc: "عرض حي في مسرح فيترا، ميلانو.",
+        btn_vodafone: "شاهد على يوتيوب",
+        card_goldberg_desc: "اختلافات غولدبرغ مباشرة في ميلانو.",
+        btn_goldberg: "شاهد على إنستغرام",
+        contact_title: "اتصل بنا",
+        btn_whatsapp: "تواصل عبر واتساب",
+        audio_link: "النسخة الكاملة",
+        scroll_text: "تمرير"
+      },
+      fr: {
+        hero_subtitle: "Pianiste | Compositeur | Producteur Multimédia",
+        hero_quote: "\"Je ne joue pas du piano, je joue du Cardiophone. La musique naît dans le cœur et atteint l'esprit.\" L'Anomalie. Le Virtuose.",
+        hero_link: "CLIQUEZ ICI POUR ÉCOUTER LA VERSION INTÉGRALE DE VELVET EMBARGO",
+        about_title: "Profil Créatif",
+        about_p1: "Pianiste, Compositeur et Producteur, célèbre pour sa technique pionnière à six doigts développée après une blessure majeure. 30 ans d'expérience entre jazz et électronique de pointe.",
+        about_p2: "Crée des paysages sonores immersifs pour Armani, Prada et Audi, fusionnant musique et nouvelles technologies.",
+        about_p3: "Fondateur de WICK Productions (Milan/NY). Prix du meilleur court-métrage AI aux AI Film Awards de Paris 2025.",
+        about_p4: "Ses validations historiques incluent avoir joué aux côtés de Miles Davis et en concert avec Dizzy Gillespie. Il a aussi collaboré avec des icônes comme Skrillex et Davide Rossi.",
+        media_title: "Sélection Média",
+        card_music_title: "Portfolio Musical",
+        card_music_desc: "100% One-Stop (Master & Publishing). Découvrez la discographie sur Disco.ac.",
+        btn_disco: "Visitez Disco.ac",
+        card_ai_title: "Œuvres IA",
+        card_ai_desc: "Regardez le reel immersif primé.",
+        btn_video: "Ouvrir Vidéo",
+        card_bach_desc: "Quand Bach rencontre Massive Attack.",
+        btn_insta: "Voir sur Instagram",
+        card_vodafone_desc: "Performance live au Teatro Vetra, Milan.",
+        btn_vodafone: "Voir sur YouTube",
+        card_goldberg_desc: "Variations Goldberg en live à Milan.",
+        btn_goldberg: "Voir sur Instagram",
+        contact_title: "Contact",
+        btn_whatsapp: "Chat WhatsApp",
+        audio_link: "Version Intégrale",
+        scroll_text: "DÉFILER"
+      },
+      ja: {
+        hero_subtitle: "ピアニスト | 作曲家 | マルチメディアプロデューサー",
+        hero_quote: "「私はピアノではなく、カーディオフォンを弾く。心から生まれ、思考へと届く音楽。」 アノマリー（異端）。ヴィルトゥオーゾ。",
+        hero_link: "VELVET EMBARGOのフルバージョンを聴くにはここをクリック",
+        about_title: "アーティストプロフィール",
+        about_p1: "怪我を乗り越え、独創的な「6本指の技法」を確立したピアニスト、作曲家、プロデューサー。ジャズから電子音楽まで30年のキャリア。",
+        about_p2: "ArmaniやAudiなどの高級ブランドのために、音楽と視覚芸術を融合させた没入型の音景を制作。",
+        about_p3: "WICK Productions（ミラノ/NY）創設者。2025年パリにて「最優秀AI短編映画賞」を受賞。",
+        about_p4: "歴史的偉業として、マイルス・デイヴィスとの共演やディジー・ガレスピーとのコンサートがあります。Skrillexなどの現代のアイコンともコラボレーション。",
+        media_title: "メディアセレクション",
+        card_music_title: "音楽ポートフォリオ",
+        card_music_desc: "100% One-Stop（マスター＆パブリッシング権完備）。Disco.acで全作品をチェック。",
+        btn_disco: "Disco.acを見る",
+        card_ai_title: "AI作品リール",
+        card_ai_desc: "受賞歴のある没入型映像を視聴。",
+        btn_video: "ビデオを開く",
+        card_bach_desc: "バッハとMassive Attackの融合。",
+        btn_insta: "Instagramで見る",
+        card_vodafone_desc: "ミラノ、テアトロ・ヴェトラでのライブ。",
+        btn_vodafone: "YouTubeで視聴",
+        card_goldberg_desc: "ミラノでのゴルトベルク変奏曲ライブ。",
+        btn_goldberg: "Instagramで視聴",
+        contact_title: "お問い合わせ",
+        btn_whatsapp: "WhatsAppチャット",
+        audio_link: "フルバージョン",
+        scroll_text: "スクロール"
+      },
+      de: {
+        hero_subtitle: "Pianist | Komponist | Multimedia-Produzent",
+        hero_quote: "\"Ich spiele nicht Klavier, ich spiele das Cardiophone. Musik, die im Herzen beginnt und den Geist erreicht.\" Die Anomalie. Der Virtuose.",
+        hero_link: "KLICKEN SIE HIER, UM DIE VOLLVERSION VON VELVET EMBARGO ZU HÖREN",
+        about_title: "Künstlerprofil",
+        about_p1: "Pianist, Komponist und Produzent, berühmt für seine bahnbrechende Sechs-Finger-Technik, die er nach einer Verletzung entwickelte. 30 Jahre Erfahrung in Jazz und Elektronik.",
+        about_p2: "Erstellt immersive Soundscapes für Luxusmarken wie Armani, Prada und Audi, indem er Musik mit visueller Kunst verbindet.",
+        about_p3: "Gründer von WICK Productions (Mailand/NY). Gewinner des AI Film Awards in Paris 2025.",
+        about_p4: "Historische Meilensteine umfassen das Spielen an der Seite von Miles Davis und im Konzert mit Dizzy Gillespie. Auch Kooperationen mit Ikonen wie Skrillex.",
+        media_title: "Medien-Auswahl",
+        card_music_title: "Musikportfolio",
+        card_music_desc: "100% One-Stop (Master & Publishing). Entdecken Sie die Diskografie auf Disco.ac.",
+        btn_disco: "Disco.ac besuchen",
+        card_ai_title: "AI-Video-Reel",
+        card_ai_desc: "Sehen Sie sich das preisgekrönte Reel an.",
+        btn_video: "Video öffnen",
+        card_bach_desc: "Wenn Bach auf Massive Attack trifft.",
+        btn_insta: "Auf Instagram ansehen",
+        card_vodafone_desc: "Live-Auftritt im Teatro Vetra, Mailand.",
+        btn_vodafone: "Auf YouTube ansehen",
+        card_goldberg_desc: "Goldberg-Variationen live in Mailand.",
+        btn_goldberg: "Auf Instagram ansehen",
+        contact_title: "Kontakt",
+        btn_whatsapp: "WhatsApp Chat",
+        audio_link: "Vollversion",
+        scroll_text: "SCROLLEN"
+      },
+      ko: {
+        hero_subtitle: "피아니스트 | 작곡가 | 멀티미디어 프로듀서",
+        hero_quote: "\"나는 피아노가 아니라 카디오폰을 연주한다. 마음에서 시작되어 이성에 닿는 음악.\" 독보적인 존재. 거장.",
+        hero_link: "VELVET EMBARGO 전체 버전을 들으려면 여기를 클릭하십시오",
+        about_title: "아티스트 소개",
+        about_p1: "선구적인 6손가락 기법으로 유명한 피아니스트, 작곡가, 프로듀서. 재즈와 전자음악을 넘나드는 30년의 경력.",
+        about_p2: "Armani, Prada, Audi 등 글로벌 럭셔리 브랜드를 위한 몰입형 사운드스케이프 제작.",
+        about_p3: "WICK Productions(밀라노/NY) 창립자. 2025년 파리 AI 영화제 최우수 단편상 수상.",
+        about_p4: "역사적인 협업으로는 마일스 데이비스와의 연주 및 디지 길레스피와의 콘서트가 있습니다. Skrillex 등 현대 아이콘들과도 협업.",
+        media_title: "미디어 선택",
+        card_music_title: "음악 포트폴리오",
+        card_music_desc: "100% One-Stop (마스터 및 퍼블리싱). Disco.ac에서 전체 음반 확인.",
+        btn_disco: "Disco.ac 방문",
+        card_ai_title: "AI 작업 비디오",
+        card_ai_desc: "수상 경력에 빛나는 몰입형 영상을 시청하십시오.",
+        btn_video: "비디오 열기",
+        card_bach_desc: "바흐와 매시브 어택의 만남.",
+        btn_insta: "Instagram에서 보기",
+        card_vodafone_desc: "밀라노 테아트로 베트라 라이브 공연.",
+        btn_vodafone: "YouTube에서 보기",
+        card_goldberg_desc: "밀라노 라이브 골드베르크 변주곡.",
+        btn_goldberg: "Instagram에서 보기",
+        contact_title: "연락처",
+        btn_whatsapp: "WhatsApp 채팅",
+        audio_link: "전체 버전",
+        scroll_text: "스크롤"
+      }
+    };
+
+    const splash = document.getElementById('splash');
+    const audio = document.getElementById('bg-audio');
+    const bgVideo = document.getElementById('bg-video');
+    const audioUI = document.getElementById('audioUI');
+    const modal = document.getElementById('modal');
+    const modalFrame = document.getElementById('modalFrame');
+    const scrollInd = document.getElementById('scrollIndicator');
+    const audioToggle = document.getElementById('audioToggle');
+
+    let userMuted = false;
+    let fadeTimer = null;
+    let isModalOpen = false;
+
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      const t = translations[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.textContent = t[key];
+      });
+    }
+
+    function fadeAudio(target, durationMs, onComplete) {
+      if (fadeTimer) { clearInterval(fadeTimer); fadeTimer = null; }
+      const startVol = audio.volume;
+      const delta = target - startVol;
+      if (Math.abs(delta) < 0.01) {
+        audio.volume = Math.max(0, Math.min(1, target));
+        if (onComplete) onComplete();
+        return;
+      }
+      const stepMs = 40;
+      const totalSteps = Math.max(1, Math.round(durationMs / stepMs));
+      let step = 0;
+      fadeTimer = setInterval(function() {
+        step++;
+        if (step >= totalSteps) {
+          audio.volume = Math.max(0, Math.min(1, target));
+          clearInterval(fadeTimer);
+          fadeTimer = null;
+          if (onComplete) onComplete();
+        } else {
+          var t = step / totalSteps;
+          var eased = t * t * (3.0 - 2.0 * t);
+          audio.volume = Math.max(0, Math.min(1, startVol + delta * eased));
+        }
+      }, stepMs);
+    }
+
+    function velvetFadeOut() {
+      if (!userMuted && !audio.paused && audio.volume > 0.01) {
+        fadeAudio(0, 2000);
+      }
+    }
+
+    function velvetFadeIn() {
+      if (!userMuted) {
+        audio.play().catch(function(){});
+        fadeAudio(1, 3000);
+      }
+    }
+
+    function enterSite(lang) {
+      setLang(lang);
+      splash.classList.add('hidden');
+      audioUI.style.display = 'flex';
+      audio.volume = 0;
+      audio.play().then(function() { fadeAudio(1, 3000); }).catch(function(){});
+      if (bgVideo) bgVideo.play();
+    }
+
+    document.querySelectorAll('.splash-lang-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() { enterSite(btn.dataset.lang); });
+    });
+
+    window.openVideo = function(id) {
+      isModalOpen = true;
+      velvetFadeOut();
+      modal.classList.add('open');
+      modalFrame.src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1";
+    };
+
+    function closeModal() {
+      if (!isModalOpen) return;
+      isModalOpen = false;
+      modal.classList.remove('open');
+      modalFrame.src = "";
+      velvetFadeIn();
+    }
+
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('click', function(e) {
+      var link = e.target.closest('a[target="_blank"]');
+      if (link && !userMuted) velvetFadeOut();
+    });
+
+    document.addEventListener('visibilitychange', function() {
+      var siteActive = splash.classList.contains('hidden');
+      if (!siteActive || userMuted) return;
+      if (document.hidden) {
+        fadeAudio(0, 1000);
+      } else if (!isModalOpen) {
+        velvetFadeIn();
+      }
+    });
+
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 150) scrollInd.classList.add('fade-out');
+      else scrollInd.classList.remove('fade-out');
+    });
+
+    audioToggle.addEventListener('click', function() {
+      if (audio.paused || audio.volume < 0.1) {
+        userMuted = false;
+        this.textContent = '\u23f8';
+        audio.play().catch(function(){});
+        fadeAudio(1, 1000);
+      } else {
+        userMuted = true;
+        this.textContent = '\u25b6';
+        fadeAudio(0, 1000);
+      }
+    });
+
+  </script>
+</body>
+</html>
