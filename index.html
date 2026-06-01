@@ -72,6 +72,12 @@
     #scrollIndicator.fade-out { opacity: 0; pointer-events: none; }
     #scrollIndicator .scroll-label { font-family: 'Cinzel', serif; font-size: 0.9rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.4em; }
     .arrow-down span { display: block; width: 20px; height: 20px; border-right: 3px solid var(--gold); border-bottom: 3px solid var(--gold); transform: rotate(45deg); }
+
+#homeBtn { position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 9000; display: none; }
+#homeBtn button { font-family: 'Cinzel', serif; color: var(--gold); background: rgba(0,0,0,0.9); border: 1.5px solid var(--gold); padding: 18px 52px; cursor: pointer; backdrop-filter: blur(8px); transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; gap: 7px; box-shadow: 0 0 18px rgba(197,179,88,0.25); }
+#homeBtn button:hover { background: rgba(197,179,88,0.15); box-shadow: 0 0 30px rgba(197,179,88,0.5); transform: scale(1.04); }
+#homeBtn .home-glyphs { font-size: 1.25rem; letter-spacing: 0.4em; opacity: 1; }
+#homeBtn .home-label { font-size: 1.1rem; letter-spacing: 0.65em; text-transform: uppercase; }
   </style>
 </head>
 <body>
@@ -115,7 +121,14 @@
     </div>
   </div>
 
-  <div id="modal">
+  <div id="homeBtn">
+  <button onclick="goHome()">
+    <span class="home-glyphs">⌬ ⎊ ◈ ⎊ ⌬</span>
+    <span class="home-label">H O M E</span>
+  </button>
+</div>
+
+<div id="modal">
     <div class="modal-content">
       <button class="modal-close" id="modalClose">&#10005;</button>
       <iframe id="modalFrame" src="" allowfullscreen></iframe>
@@ -131,12 +144,12 @@
     <section id="hero-section">
       <div class="container-max text-center">
         <h1 class="accent-gold font-bold" style="font-size:clamp(3rem,8vw,6rem); letter-spacing:0.1em;">MICHELE RANAURO</h1>
-        <p data-i18n="hero_subtitle" class="text-xl md:text-2xl mt-4 text-gray-300 uppercase tracking-widest">Pianist | Composer | Multimedia Producer</p>
+        <p data-i18n="hero_subtitle" class="text-xl md:text-2xl mt-4 text-gray-300 uppercase tracking-widest">Sonic Worldbuilder · AI Award Winner · Composer</p>
         <p data-i18n="hero_quote" class="mt-8 text-lg md:text-xl italic opacity-90 max-w-3xl mx-auto leading-relaxed">
           "I don't play the piano – I play the Cardiophone. Music that starts in the heart and reaches the mind."
         </p>
         <p class="mt-8">
-            <a data-i18n="hero_link" href="https://micheleranauro.disco.ac/share-new/551226553?signature=BcsLC4GFlMlW7ziBO3iVIJ3y-sQ%3Akh71OfGS#/f/36207970/p/27467059" target="_blank" class="accent-gold border-b border-[#C5B358] text-sm md:text-base font-bold tracking-[0.2em] hover:text-white transition-colors">TO LISTEN TO VELVET EMBARGO FULL VERSION, CLICK HERE</a>
+            <a data-i18n="hero_link" href="https://youtu.be/Fht_cd22mPg" target="_blank" class="accent-gold border-b border-[#C5B358] text-sm md:text-base font-bold tracking-[0.2em] hover:text-white transition-colors">TO WATCH VELVET EMBARGO FULL VERSION, CLICK HERE</a>
         </p>
       </div>
     </section>
@@ -146,9 +159,9 @@
           <h2 data-i18n="about_title" class="section-title">Creative Profile</h2>
           <div class="card max-w-4xl mx-auto space-y-6">
             <p data-i18n="about_p1" class="text-base md:text-lg leading-relaxed">Pianist, Composer, and Producer celebrated for a trailblazing six-finger technique developed after a career-threatening injury. His 30-year journey spans jazz, contemporary classical, and high-end electronic production.</p>
-            <p data-i18n="about_p2" class="text-base md:text-lg leading-relaxed">He creates immersive soundscapes and high-impact scores for global luxury brands including Armani, Prada, Moschino, and Audi. His live experiences merge music with visual art and new technologies.</p>
-            <p data-i18n="about_p3" class="text-base md:text-lg leading-relaxed">As a founding partner of WICK Productions (Milano/New York), he integrates multimedia storytelling for Hollywood clients. He was awarded 'Best AI Short Film' at the 2025 AI Film Awards in Paris.</p>
-            <p data-i18n="about_p4" class="text-base md:text-lg leading-relaxed accent-gold font-medium">Notable validations include playing alongside Miles Davis and in concert with Dizzy Gillespie. He has also collaborated with contemporary icons like Skrillex, Wiwek, and Davide Rossi.</p>
+            <p data-i18n="about_p2" class="text-base md:text-lg leading-relaxed">One of the most singular and daring compositional voices of his generation. He creates immersive soundscapes and scores for global brands including Armani, Prada, Moschino, and Audi — works where music, visual art, and new technologies become a single experience.</p>
+            <p data-i18n="about_p3" class="text-base md:text-lg leading-relaxed">A pioneer in the use of artificial intelligence as an expressive language, he was awarded 'Best AI Short Film' at the 2025 AI Film Awards in Paris.</p>
+            <p data-i18n="about_p4" class="text-base md:text-lg leading-relaxed accent-gold font-medium">His is a life crossed by a single musical prism: from jazz played alongside Miles Davis and Dizzy Gillespie, to 1990s New York hip hop with Q-Tip and Redman, through to Lenny Kravitz and the most extreme frontiers of electronic music with Skrillex and Wiwek. Music has no genre. Music is the genre.</p>
           </div>
         </div>
     </section>
@@ -189,7 +202,7 @@
 
     <section>
       <div class="container-max text-center">
-        <h2 data-i18n="contact_title" class="section-title">Contact</h2>
+        <h2 data-i18n="contact_title" class="section-title">Work with me</h2>
         <div class="card max-w-2xl mx-auto items-center">
           <p class="mb-8"><a href="mailto:michele@micheleranauro.com" class="text-xl md:text-2xl border-b border-[#C5B358] text-[#C5B358] tracking-widest">michele@micheleranauro.com</a></p>
           <a data-i18n="btn_whatsapp" href="https://wa.me/393245903787" target="_blank" class="btn-primary btn-whatsapp max-w-xs">Chat on WhatsApp</a>
@@ -201,14 +214,14 @@
   <script>
     const translations = {
       en: {
-        hero_subtitle: "Pianist | Composer | Multimedia Producer",
+        hero_subtitle: "Sonic Worldbuilder · AI Award Winner · Composer",
         hero_quote: "\"I don't play the piano – I play the Cardiophone. Music that starts in the heart and reaches the mind.\" The Anomaly. Virtuoso.",
-        hero_link: "TO LISTEN TO VELVET EMBARGO FULL VERSION, CLICK HERE",
+        hero_link: "TO WATCH VELVET EMBARGO FULL VERSION, CLICK HERE",
         about_title: "Creative Profile",
         about_p1: "Pianist, Composer, and Producer celebrated for a trailblazing six-finger technique developed after a career-threatening injury. His 30-year journey spans jazz, contemporary classical, and high-end electronic production.",
-        about_p2: "He creates immersive soundscapes and high-impact scores for global luxury brands including Armani, Prada, Moschino, and Audi. His live experiences merge music with visual art and new technologies.",
-        about_p3: "As a founding partner of WICK Productions (Milano/New York), he integrates multimedia storytelling for Hollywood clients. He was awarded 'Best AI Short Film' at the 2025 AI Film Awards in Paris.",
-        about_p4: "Notable historical validations include playing alongside Miles Davis and in concert with Dizzy Gillespie. He has also collaborated with contemporary icons like Skrillex, Wiwek, and Davide Rossi.",
+        about_p2: "One of the most singular and daring compositional voices of his generation. He creates immersive soundscapes and scores for global brands including Armani, Prada, Moschino, and Audi — works where music, visual art, and new technologies become a single experience.",
+        about_p3: "A pioneer in the use of artificial intelligence as an expressive language, he was awarded 'Best AI Short Film' at the 2025 AI Film Awards in Paris.",
+        about_p4: "His is a life crossed by a single musical prism: from jazz played alongside Miles Davis and Dizzy Gillespie, to 1990s New York hip hop with Q-Tip and Redman, through to Lenny Kravitz and the most extreme frontiers of electronic music with Skrillex and Wiwek. Music has no genre. Music is the genre.",
         media_title: "Media Selection",
         card_music_title: "Music Portfolio",
         card_music_desc: "100% One-Stop (Master & Publishing). Discover the full discography on Disco.ac.",
@@ -222,20 +235,20 @@
         btn_vodafone: "Watch on YouTube",
         card_goldberg_desc: "Goldberg Variations performed live in Milan.",
         btn_goldberg: "Watch on Instagram",
-        contact_title: "Contact",
+        contact_title: "Work with me",
         btn_whatsapp: "Chat on WhatsApp",
         audio_link: "Listen Full Version",
         scroll_text: "SCROLL"
       },
       it: {
-        hero_subtitle: "Pianista | Compositore | Produttore Multimediale",
+        hero_subtitle: "Sonic Worldbuilder · AI Award Winner · Compositore",
         hero_quote: "\"Non suono il pianoforte, suono il Cardiophone. Musica che nasce nel cuore e raggiunge la mente.\" L'Anomalia. Il Virtuoso.",
-        hero_link: "PER ASCOLTARE LA VERSIONE INTEGRALE DI VELVET EMBARGO, CLICCA QUI",
+        hero_link: "PER GUARDARE LA VERSIONE INTEGRALE DI VELVET EMBARGO, CLICCA QUI",
         about_title: "Profilo Creativo",
         about_p1: "Pianista, Compositore e Produttore, celebre per la tecnica pionieristica a sei dita sviluppata dopo un grave infortunio. Il suo percorso trentennale spazia tra jazz, classica contemporanea ed elettronica di alto livello.",
-        about_p2: "Crea paesaggi sonori immersivi e colonne sonore per marchi globali come Armani, Prada, Moschino e Audi. Le sue performance dal vivo fondono musica, arte visiva e nuove tecnologie.",
-        about_p3: "Come socio fondatore di WICK Productions (Milano/New York), integra lo storytelling multimediale per clienti di Hollywood. Ha vinto il premio 'Best AI Short Film' ai 2025 AI Film Awards di Parigi.",
-        about_p4: "Validazioni storiche d'élite includono l'aver suonato accanto a Miles Davis e in concerto con Dizzy Gillespie. Ha inoltre collaborato con icone contemporanee come Skrillex, Wiwek e Davide Rossi.",
+        about_p2: "Una delle voci compositive più singolari e audaci della sua generazione. Crea paesaggi sonori immersivi e colonne sonore per marchi globali come Armani, Prada, Moschino e Audi — opere in cui musica, arte visiva e nuove tecnologie diventano un'unica esperienza.",
+        about_p3: "Pioniere nell'uso dell'intelligenza artificiale come linguaggio espressivo, ha vinto il premio 'Best AI Short Film' ai 2025 AI Film Awards di Parigi.",
+        about_p4: "La sua è una vita attraversata da un unico prisma musicale: dal jazz suonato accanto a Miles Davis e Dizzy Gillespie, all'hip hop newyorkese degli anni '90 con Q-Tip e Redman, fino a Lenny Kravitz e alle frontiere più estreme dell'elettronica con Skrillex e Wiwek. La musica non ha un genere. La musica è il genere.",
         media_title: "Selezione Media",
         card_music_title: "Portfolio Musicale",
         card_music_desc: "100% One-Stop (Master & Publishing). Scopri la discografia completa su Disco.ac.",
@@ -249,20 +262,20 @@
         btn_vodafone: "Guarda su YouTube",
         card_goldberg_desc: "Variazioni Goldberg eseguite dal vivo a Milano.",
         btn_goldberg: "Guarda su Instagram",
-        contact_title: "Contatti",
+        contact_title: "Work with me",
         btn_whatsapp: "Scrivimi su WhatsApp",
         audio_link: "Versione Integrale",
         scroll_text: "SCORRI"
       },
       es: {
-        hero_subtitle: "Pianista | Compositor | Productor Multimedia",
+        hero_subtitle: "Sonic Worldbuilder · AI Award Winner · Compositor",
         hero_quote: "\"No toco el piano, toco el Cardiophone. Música que nace en el corazón y llega a la mente.\" La Anomalía. El Virtuoso.",
-        hero_link: "PARA ESCUCHAR LA VERSIÓN COMPLETA DE VELVET EMBARGO, HAZ CLIC AQUÍ",
+        hero_link: "PARA VER LA VERSIÓN COMPLETA DE VELVET EMBARGO, HAZ CLIC AQUÍ",
         about_title: "Perfil Creativo",
         about_p1: "Pianista, Compositor y Productor, célebre por su técnica pionera de seis dedos desarrollada tras una lesión que amenazó su carrera. 30 años de trayectoria entre jazz, clásica y electrónica.",
-        about_p2: "Crea paisajes sonoros inmersivos para marcas de lujo como Armani, Prada y Audi, uniendo música y arte visual.",
-        about_p3: "Socio fundador de WICK Productions (Milán/NY), integra narrativas multimedia para Hollywood. Premiado 'Mejor Corto AI' en París 2025.",
-        about_p4: "Sus validaciones históricas incluyen tocar junto a Miles Davis y en concierto con Dizzy Gillespie. También ha colaborado con íconos actuales como Skrillex y Davide Rossi.",
+        about_p2: "Una de las voces compositivas más singulares y audaces de su generación. Crea paisajes sonoros inmersivos y bandas sonoras para marcas globales como Armani, Prada, Moschino y Audi — obras donde la música, el arte visual y las nuevas tecnologías se convierten en una sola experiencia.",
+        about_p3: "Pionero en el uso de la inteligencia artificial como lenguaje expresivo, fue premiado con 'Best AI Short Film' en los AI Film Awards de París 2025.",
+        about_p4: "La suya es una vida atravesada por un único prisma musical: del jazz tocado junto a Miles Davis y Dizzy Gillespie, al hip hop neoyorquino de los años 90 con Q-Tip y Redman, hasta Lenny Kravitz y las fronteras más extremas de la electrónica con Skrillex y Wiwek. La música no tiene género. La música es el género.",
         media_title: "Selección de Medios",
         card_music_title: "Portafolio Musical",
         card_music_desc: "100% One-Stop (Master & Publishing). Descubre la discografía en Disco.ac.",
@@ -276,20 +289,20 @@
         btn_vodafone: "Ver en YouTube",
         card_goldberg_desc: "Variaciones Goldberg en vivo en Milán.",
         btn_goldberg: "Ver en Instagram",
-        contact_title: "Contacto",
+        contact_title: "Work with me",
         btn_whatsapp: "Chat en WhatsApp",
         audio_link: "Versión Completa",
         scroll_text: "DESPLAZAR"
       },
       zh: {
-        hero_subtitle: "钢琴家 | 作曲家 | 多媒体制作人",
+        hero_subtitle: "声音世界构建者 · AI大奖得主 · 作曲家",
         hero_quote: "“我弹奏的不是钢琴，而是‘心音琴’（Cardiophone）。音乐源于心，达于智。” 非凡。巨匠。",
-        hero_link: "点击此处收听 VELVET EMBARGO 完整版",
+        hero_link: "点击此处观看 VELVET EMBARGO 完整版",
         about_title: "艺术档案",
         about_p1: "钢琴家、作曲家与制作人，以伤后独创的“六指技法”闻名。拥有30年跨越爵士、古典与高端电子乐的创作经验。",
-        about_p2: "为 Armani、Prada 和 Audi 等全球奢侈品牌打造沉浸式声景，将音乐与视觉科技完美融合。",
-        about_p3: "WICK Productions（米兰/纽约）创始人，为好莱坞客户提供多媒体叙事。2025年于巴黎获“最佳AI短片奖”。",
-        about_p4: "历史性成就包括与 Miles Davis 同台，以及与 Dizzy Gillespie 的音乐会。他也曾与 Skrillex、Wiwek 等当代偶像合作。",
+        about_p2: "他是同代人中最独特、最大胆的作曲家之一。为 Armani、Prada、Moschino 和 Audi 等全球品牌创作沉浸式声景与配乐——在他的作品中，音乐、视觉艺术与新技术融为一体的单一体验。",
+        about_p3: "作为将人工智能作为表达语言的先驱，他荣获2025年巴黎 AI 电影奖“最佳 AI 短片奖”。",
+        about_p4: "他的一生贯穿着一道独特的音乐棱镜：从与 Miles Davis 和 Dizzy Gillespie 同台的爵士乐，到与 Q-Tip 和 Redman 合作的90年代纽约嘻哈，再到 Lenny Kravitz，直至与 Skrillex 和 Wiwek 探索电子乐的极致前沿。音乐没有流派。音乐本身就是流派。",
         media_title: "媒体精选",
         card_music_title: "音乐作品",
         card_music_desc: "100% One-Stop (录音与词曲全版权)。在 Disco.ac 上探索完整唱片。",
@@ -303,20 +316,20 @@
         btn_vodafone: "在 YouTube 上观看",
         card_goldberg_desc: "米兰现场演奏哥德堡变奏曲。",
         btn_goldberg: "在 Instagram 上观看",
-        contact_title: "联系方式",
+        contact_title: "Work with me",
         btn_whatsapp: "WhatsApp 聊天",
         audio_link: "完整版本",
         scroll_text: "向下滚动"
       },
       ar: {
-        hero_subtitle: "عازف بيانو | ملحن | منتج وسائط متعددة",
+        hero_subtitle: "مُصمِّم عوالم صوتية · الفائز بجائزة AI · ملحن",
         hero_quote: "\"أنا لا أعزف على البيانو، أنا أعزف على الكارديوفون. موسيقى تبدأ في القلب وتصل إلى العقل.\" الاستثناء. العبقري.",
-        hero_link: "اضغط هنا للاستماع إلى النسخة الكاملة من VELVET EMBARGO",
+        hero_link: "اضغط هنا لمشاهدة النسخة الكاملة من VELVET EMBARGO",
         about_title: "الملف الإبداعي",
         about_p1: "عازف بيانو وملحن ومنتج، مشهور بتقنية الأصابع الستة الرائدة التي طورها بعد إصابة هددت مسيرته. 30 عاماً من الخبرة في دمج الجاز بالموسيقى الإلكترونية الراقية.",
-        about_p2: "يصمم مناظر صوتية لعلامات تجارية كبرى مثل Armani و Audi، مدمجاً الموسيقى بالفن البصري.",
-        about_p3: "شريك مؤسس لـ WICK Productions (ميلانو/نيويورك). حائز على جائزة أفضل فيلم AI قصير في باريس 2025.",
-        about_p4: "تشمل إنجازاته التاريخية العزف إلى جانب أسطورة الجاز Miles Davis وفي حفلات مع Dizzy Gillespie. كما تعاون مع أيقونات معاصرة مثل Skrillex.",
+        about_p2: "أحد أكثر الأصوات التأليفية تفرّداً وجرأةً في جيله. يبتكر مشاهد صوتية غامرة وموسيقى تصويرية لعلامات عالمية مثل Armani وPrada وMoschino وAudi — أعمال تتحد فيها الموسيقى والفن البصري والتقنيات الجديدة في تجربة واحدة.",
+        about_p3: "رائد في استخدام الذكاء الاصطناعي كلغة تعبيرية، حاز على جائزة 'أفضل فيلم قصير بالذكاء الاصطناعي' في حفل AI Film Awards بباريس 2025.",
+        about_p4: "حياته منشور موسيقي واحد: من الجاز الذي عزفه إلى جانب Miles Davis وDizzy Gillespie، إلى هيب هوب نيويورك في التسعينيات مع Q-Tip وRedman، وصولاً إلى Lenny Kravitz وأقصى حدود الموسيقى الإلكترونية مع Skrillex وWiwek. الموسيقى ليست نوعاً. الموسيقى هي النوع.",
         media_title: "الوسائط",
         card_music_title: "المحفظة الموسيقية",
         card_music_desc: "100% One-Stop (حقوق الماستر والنشر). اكتشف الألبومات الكاملة على Disco.ac.",
@@ -330,20 +343,20 @@
         btn_vodafone: "شاهد على يوتيوب",
         card_goldberg_desc: "اختلافات غولدبرغ مباشرة في ميلانو.",
         btn_goldberg: "شاهد على إنستغرام",
-        contact_title: "اتصل بنا",
+        contact_title: "Work with me",
         btn_whatsapp: "تواصل عبر واتساب",
         audio_link: "النسخة الكاملة",
         scroll_text: "تمرير"
       },
       fr: {
-        hero_subtitle: "Pianiste | Compositeur | Producteur Multimédia",
+        hero_subtitle: "Sonic Worldbuilder · AI Award Winner · Compositeur",
         hero_quote: "\"Je ne joue pas du piano, je joue du Cardiophone. La musique naît dans le cœur et atteint l'esprit.\" L'Anomalie. Le Virtuose.",
-        hero_link: "CLIQUEZ ICI POUR ÉCOUTER LA VERSION INTÉGRALE DE VELVET EMBARGO",
+        hero_link: "CLIQUEZ ICI POUR REGARDER LA VERSION INTÉGRALE DE VELVET EMBARGO",
         about_title: "Profil Créatif",
         about_p1: "Pianiste, Compositeur et Producteur, célèbre pour sa technique pionnière à six doigts développée après une blessure majeure. 30 ans d'expérience entre jazz et électronique de pointe.",
-        about_p2: "Crée des paysages sonores immersifs pour Armani, Prada et Audi, fusionnant musique et nouvelles technologies.",
-        about_p3: "Fondateur de WICK Productions (Milan/NY). Prix du meilleur court-métrage AI aux AI Film Awards de Paris 2025.",
-        about_p4: "Ses validations historiques incluent avoir joué aux côtés de Miles Davis et en concert avec Dizzy Gillespie. Il a aussi collaboré avec des icônes comme Skrillex et Davide Rossi.",
+        about_p2: "L'une des voix compositionnelles les plus singulières et audacieuses de sa génération. Il crée des paysages sonores immersifs et des bandes originales pour des marques mondiales comme Armani, Prada, Moschino et Audi — des œuvres où musique, art visuel et nouvelles technologies ne forment qu'une seule expérience.",
+        about_p3: "Pionnier de l'usage de l'intelligence artificielle comme langage expressif, il a remporté le prix 'Best AI Short Film' aux AI Film Awards de Paris 2025.",
+        about_p4: "La sienne est une vie traversée par un unique prisme musical : du jazz joué aux côtés de Miles Davis et Dizzy Gillespie, au hip hop new-yorkais des années 90 avec Q-Tip et Redman, jusqu'à Lenny Kravitz et aux frontières les plus extrêmes de l'électronique avec Skrillex et Wiwek. La musique n'a pas de genre. La musique est le genre.",
         media_title: "Sélection Média",
         card_music_title: "Portfolio Musical",
         card_music_desc: "100% One-Stop (Master & Publishing). Découvrez la discographie sur Disco.ac.",
@@ -357,20 +370,20 @@
         btn_vodafone: "Voir sur YouTube",
         card_goldberg_desc: "Variations Goldberg en live à Milan.",
         btn_goldberg: "Voir sur Instagram",
-        contact_title: "Contact",
+        contact_title: "Work with me",
         btn_whatsapp: "Chat WhatsApp",
         audio_link: "Version Intégrale",
         scroll_text: "DÉFILER"
       },
       ja: {
-        hero_subtitle: "ピアニスト | 作曲家 | マルチメディアプロデューサー",
+        hero_subtitle: "ソニック・ワールドビルダー · AI受賞者 · 作曲家",
         hero_quote: "「私はピアノではなく、カーディオフォンを弾く。心から生まれ、思考へと届く音楽。」 アノマリー（異端）。ヴィルトゥオーゾ。",
-        hero_link: "VELVET EMBARGOのフルバージョンを聴くにはここをクリック",
+        hero_link: "VELVET EMBARGOのフルバージョンを見るにはここをクリック",
         about_title: "アーティストプロフィール",
         about_p1: "怪我を乗り越え、独創的な「6本指の技法」を確立したピアニスト、作曲家、プロデューサー。ジャズから電子音楽まで30年のキャリア。",
-        about_p2: "ArmaniやAudiなどの高級ブランドのために、音楽と視覚芸術を融合させた没入型の音景を制作。",
-        about_p3: "WICK Productions（ミラノ/NY）創設者。2025年パリにて「最優秀AI短編映画賞」を受賞。",
-        about_p4: "歴史的偉業として、マイルス・デイヴィスとの共演やディジー・ガレスピーとのコンサートがあります。Skrillexなどの現代のアイコンともコラボレーション。",
+        about_p2: "同世代で最も個性的かつ大胆な作曲家の一人。Armani、Prada、Moschino、Audiといったグローバルブランドのために没入型サウンドスケープとスコアを制作し、音楽・視覚芸術・最新テクノロジーが一つの体験へと融合する作品を生み出す。",
+        about_p3: "人工知能を表現言語として用いる先駆者として、2025年パリのAI Film Awardsで「最優秀AI短編映画賞」を受賞。",
+        about_p4: "彼の人生は一つの音楽的プリズムを貫いている。マイルス・デイヴィスやディジー・ガレスピーと共演したジャズから、Q-TipやRedmanとの90年代ニューヨークのヒップホップ、そしてレニー・クラヴィッツ、さらにSkrillexやWiwekと探求した電子音楽の最先端まで。音楽にジャンルはない。音楽こそがジャンルである。",
         media_title: "メディアセレクション",
         card_music_title: "音楽ポートフォリオ",
         card_music_desc: "100% One-Stop（マスター＆パブリッシング権完備）。Disco.acで全作品をチェック。",
@@ -384,20 +397,20 @@
         btn_vodafone: "YouTubeで視聴",
         card_goldberg_desc: "ミラノでのゴルトベルク変奏曲ライブ。",
         btn_goldberg: "Instagramで視聴",
-        contact_title: "お問い合わせ",
+        contact_title: "Work with me",
         btn_whatsapp: "WhatsAppチャット",
         audio_link: "フルバージョン",
         scroll_text: "スクロール"
       },
       de: {
-        hero_subtitle: "Pianist | Komponist | Multimedia-Produzent",
+        hero_subtitle: "Sonic Worldbuilder · AI Award Winner · Komponist",
         hero_quote: "\"Ich spiele nicht Klavier, ich spiele das Cardiophone. Musik, die im Herzen beginnt und den Geist erreicht.\" Die Anomalie. Der Virtuose.",
-        hero_link: "KLICKEN SIE HIER, UM DIE VOLLVERSION VON VELVET EMBARGO ZU HÖREN",
+        hero_link: "KLICKEN SIE HIER, UM DIE VOLLVERSION VON VELVET EMBARGO ZU SEHEN",
         about_title: "Künstlerprofil",
         about_p1: "Pianist, Komponist und Produzent, berühmt für seine bahnbrechende Sechs-Finger-Technik, die er nach einer Verletzung entwickelte. 30 Jahre Erfahrung in Jazz und Elektronik.",
-        about_p2: "Erstellt immersive Soundscapes für Luxusmarken wie Armani, Prada und Audi, indem er Musik mit visueller Kunst verbindet.",
-        about_p3: "Gründer von WICK Productions (Mailand/NY). Gewinner des AI Film Awards in Paris 2025.",
-        about_p4: "Historische Meilensteine umfassen das Spielen an der Seite von Miles Davis und im Konzert mit Dizzy Gillespie. Auch Kooperationen mit Ikonen wie Skrillex.",
+        about_p2: "Eine der eigenständigsten und kühnsten kompositorischen Stimmen seiner Generation. Er erschafft immersive Klanglandschaften und Scores für globale Marken wie Armani, Prada, Moschino und Audi — Werke, in denen Musik, visuelle Kunst und neue Technologien zu einem einzigen Erlebnis verschmelzen.",
+        about_p3: "Als Pionier im Einsatz künstlicher Intelligenz als Ausdruckssprache wurde er bei den AI Film Awards 2025 in Paris mit dem Preis 'Best AI Short Film' ausgezeichnet.",
+        about_p4: "Sein Leben wird von einem einzigen musikalischen Prisma durchzogen: vom Jazz an der Seite von Miles Davis und Dizzy Gillespie über den New Yorker Hip Hop der 90er mit Q-Tip und Redman bis hin zu Lenny Kravitz und den äußersten Grenzen der elektronischen Musik mit Skrillex und Wiwek. Musik hat kein Genre. Musik ist das Genre.",
         media_title: "Medien-Auswahl",
         card_music_title: "Musikportfolio",
         card_music_desc: "100% One-Stop (Master & Publishing). Entdecken Sie die Diskografie auf Disco.ac.",
@@ -411,20 +424,20 @@
         btn_vodafone: "Auf YouTube ansehen",
         card_goldberg_desc: "Goldberg-Variationen live in Mailand.",
         btn_goldberg: "Auf Instagram ansehen",
-        contact_title: "Kontakt",
+        contact_title: "Work with me",
         btn_whatsapp: "WhatsApp Chat",
         audio_link: "Vollversion",
         scroll_text: "SCROLLEN"
       },
       ko: {
-        hero_subtitle: "피아니스트 | 작곡가 | 멀티미디어 프로듀서",
+        hero_subtitle: "소닉 월드빌더 · AI 어워드 수상자 · 작곡가",
         hero_quote: "\"나는 피아노가 아니라 카디오폰을 연주한다. 마음에서 시작되어 이성에 닿는 음악.\" 독보적인 존재. 거장.",
-        hero_link: "VELVET EMBARGO 전체 버전을 들으려면 여기를 클릭하십시오",
+        hero_link: "VELVET EMBARGO 전체 버전을 보려면 여기를 클릭하십시오",
         about_title: "아티스트 소개",
         about_p1: "선구적인 6손가락 기법으로 유명한 피아니스트, 작곡가, 프로듀서. 재즈와 전자음악을 넘나드는 30년의 경력.",
-        about_p2: "Armani, Prada, Audi 등 글로벌 럭셔리 브랜드를 위한 몰입형 사운드스케이프 제작.",
-        about_p3: "WICK Productions(밀라노/NY) 창립자. 2025년 파리 AI 영화제 최우수 단편상 수상.",
-        about_p4: "역사적인 협업으로는 마일스 데이비스와의 연주 및 디지 길레스피와의 콘서트가 있습니다. Skrillex 등 현대 아이콘들과도 협업.",
+        about_p2: "그의 세대에서 가장 독창적이고 대담한 작곡가 중 한 명. Armani, Prada, Moschino, Audi 등 글로벌 브랜드를 위한 몰입형 사운드스케이프와 스코어를 제작하며, 음악과 시각 예술, 신기술이 하나의 경험으로 융합되는 작품을 만든다.",
+        about_p3: "인공지능을 표현 언어로 사용하는 선구자로서, 2025년 파리 AI Film Awards에서 '최우수 AI 단편상'을 수상했다.",
+        about_p4: "그의 삶은 하나의 음악적 프리즘을 관통한다. 마일스 데이비스, 디지 길레스피와 함께 연주한 재즈부터 Q-Tip과 Redman과의 90년대 뉴욕 힙합, 레니 크라비츠, 그리고 Skrillex와 Wiwek과 함께한 전자음악의 가장 극단적인 경계까지. 음악에는 장르가 없다. 음악이 곧 장르다.",
         media_title: "미디어 선택",
         card_music_title: "음악 포트폴리오",
         card_music_desc: "100% One-Stop (마스터 및 퍼블리싱). Disco.ac에서 전체 음반 확인.",
@@ -438,7 +451,7 @@
         btn_vodafone: "YouTube에서 보기",
         card_goldberg_desc: "밀라노 라이브 골드베르크 변주곡.",
         btn_goldberg: "Instagram에서 보기",
-        contact_title: "연락처",
+        contact_title: "Work with me",
         btn_whatsapp: "WhatsApp 채팅",
         audio_link: "전체 버전",
         scroll_text: "스크롤"
@@ -507,9 +520,17 @@
       }
     }
 
+    function goHome() {
+      splash.classList.remove('hidden');
+      document.getElementById('homeBtn').style.display = 'none';
+      audioUI.style.display = 'none';
+      fadeAudio(0, 1000);
+    }
+
     function enterSite(lang) {
       setLang(lang);
       splash.classList.add('hidden');
+      document.getElementById('homeBtn').style.display = 'block';
       audioUI.style.display = 'flex';
       audio.volume = 0;
       audio.play().then(function() { fadeAudio(1, 3000); }).catch(function(){});
